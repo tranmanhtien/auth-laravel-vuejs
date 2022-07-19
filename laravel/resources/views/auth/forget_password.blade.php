@@ -1,4 +1,4 @@
 @extends('auth.layout')
 @section('content')
-    <Login></Login>
+    <Forget_password></Forget_password>
 @endsection

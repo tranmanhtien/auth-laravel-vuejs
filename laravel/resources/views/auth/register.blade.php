@@ -1,4 +1,4 @@
 @extends('auth.layout')
 @section('content')
-    <Login></Login>
+    <Register></Register>
 @endsection

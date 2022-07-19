@@ -2,10 +2,12 @@
     <div class="container-login100">
         <div class="wrap-login100">
             <div class="login100-pic js-tilt" data-tilt>
-                <img src="images/img-01.png" alt="IMG">
+                <!--                <img src="images/img-01.png" alt="IMG">-->
+                <img :src="require(`/images/img-01.png`)" alt class="icon"/>
             </div>
 
             <form class="login100-form validate-form" @submit.prevent="loginForm" method="post">
+                    <input type="hidden" name="_token" :value="form._token">
 					<span class="login100-form-title text-danger">
 						Member Login
 					</span>
@@ -17,6 +19,7 @@
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
                 </div>
+                <span class="text-danger" v-if="errors && errors.email"> {{ errors.email[0] }}</span>
 
                 <div class="wrap-input100 validate-input" data-validate="Password is required">
                     <input class="input100" type="password" name="pass" placeholder="Password" v-model="form.password">
@@ -25,6 +28,7 @@
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
                 </div>
+                <span class="text-danger" v-if="errors && errors.password"> {{ errors.password[0] }}</span>
 
                 <div class="container-login100-form-btn">
                     <button class="login100-form-btn">
@@ -36,13 +40,13 @@
 						<span class="txt1">
 							Forgot
 						</span>
-                    <a class="txt2" href="#">
+                    <a class="txt2" :href="this.$apiLocation.FORGET_PASSWORD()">
                         Username / Password?
                     </a>
                 </div>
 
                 <div class="text-center p-t-136">
-                    <a class="txt2" href="#">
+                    <a class="txt2" :href="this.$apiLocation.REGISTER()">
                         Create your Account
                         <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
                     </a>
@@ -58,22 +62,23 @@ export default {
     data() {
         return {
             form: {
-            }
+               _token : document.head.querySelector('meta[name="csrf-token"]').content
+            },
+            errors: {},
         }
     },
     methods: {
         loginForm() {
-            axios.post(this.$apiLocation.LOGIN1(), this.form)
-                .then((res) => {
-                    console.log(res.status)
-                     // if(res.status == 422) {
-                     //     bootbox.alert('aaaaa');
-                     // }
-                    }
-                )
-                .catch((res) => {
-                    // bootbox.alert('aaaaa');
-                })
+            this.errors = {};
+            axios.post(this.$apiLocation.LOGIN(), this.form).then(res => {
+                if(res.data.status == this.$statusCode.UNAUTHORIZED)
+                {
+                    this.$toast.error(res.data.message)
+                } else {
+                    window.location.href = this.$apiLocation.DASHBOARD();
+                }
+                }
+            )
         }
     }
 }

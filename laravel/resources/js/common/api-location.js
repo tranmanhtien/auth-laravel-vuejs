@@ -3,8 +3,25 @@ export default class ApiLocation {
         return '/login';
     }
 
-    static LOGIN1() {
-        return '/login1';
+    static REGISTER() {
+        return '/register';
+    }
+
+    static RESET_PASSWORD()
+    {
+        return '/password/reset-password';
+    }
+
+    static DASHBOARD() {
+        return '/admin/dashboard';
+    }
+
+    static FORGET_PASSWORD() {
+        return '/password/forget-password';
+    }
+
+    static CHANGE_PASSWORD() {
+        return '/password/change-password';
     }
 
     static path(uri) {

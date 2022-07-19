@@ -13,17 +13,19 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
-import 'bootstrap';
-
-
 import Vue from "vue";
 window.Vue = Vue;
 Vue.component('login', require('./components/Auth/Login').default);
+Vue.component('register', require('./components/Auth/Register').default);
+Vue.component('forget_password', require('./components/Auth/ForgetPassword').default);
+Vue.component('reset_password', require('./components/Auth/ResetPassword').default);
 
 
 import ApiLocation from "./common/api-location";
+import {StatusCode} from "./common/status_code";
 
 Vue.prototype.$apiLocation = ApiLocation;
+Vue.prototype.$statusCode = StatusCode;
 Vue.prototype.$clearErrors = () => {
     window.__validationErrors = {}
 }
@@ -36,11 +38,17 @@ Vue.prototype.$error = field => {
     }
 }
 
-
-import bootbox from 'bootbox';
+import 'bootstrap';
+var bootbox = require('bootbox');
 
 bootbox.setDefaults({
-    closeButton: false
+    closeButton: false,
+    centerVertical: true,
+    onShow: function (e) {
+        setTimeout(function () {
+            $("button").trigger("blur");
+        }, 500);
+    }
 });
 window.bootbox = bootbox;
 
@@ -51,7 +59,6 @@ const app = new Vue({
 
 const httpErrorInterceptor = function (error) {
     if (error.response) {
-
         switch (error.response.status) {
             case 401:
                 bootbox.confirm('Session expired. Do you want to reload the page to login?', res => {
@@ -64,7 +71,9 @@ const httpErrorInterceptor = function (error) {
                 window.location.href = "/403";
                 break;
             case 404 :
+                console.log(error.response);
                 bootbox.alert(error.response.data.message, () => {
+                    $(window).unbind('beforeunload');
                     window.location.href = '/404';
                 });
                 break;
@@ -91,3 +100,15 @@ const httpErrorInterceptor = function (error) {
 window.axios.interceptors.response.use(function (response) {
     return response;
 }, httpErrorInterceptor);
+
+
+
+// toast
+import Toast from "vue-toastification";
+// Import the CSS or use your own!
+import "vue-toastification/dist/index.css";
+const options = {
+    // You can set your default options here
+};
+Vue.use(Toast, options);
+// Vue.mixin(require('./asset'));
