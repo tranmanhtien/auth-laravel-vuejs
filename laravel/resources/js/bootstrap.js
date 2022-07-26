@@ -71,7 +71,6 @@ const httpErrorInterceptor = function (error) {
                 window.location.href = "/403";
                 break;
             case 404 :
-                console.log(error.response);
                 bootbox.alert(error.response.data.message, () => {
                     $(window).unbind('beforeunload');
                     window.location.href = '/404';

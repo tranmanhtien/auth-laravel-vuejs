@@ -3059,7 +3059,6 @@ var httpErrorInterceptor = function httpErrorInterceptor(error) {
         break;
 
       case 404:
-        console.log(error.response);
         bootbox.alert(error.response.data.message, function () {
           jquery__WEBPACK_IMPORTED_MODULE_0___default()(window).unbind('beforeunload');
           window.location.href = '/404';

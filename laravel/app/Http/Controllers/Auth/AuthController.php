@@ -56,4 +56,11 @@ class AuthController extends Controller
         User::create($request->all());
         return route('admin.dashboard');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('auth.login');
+    }
 }

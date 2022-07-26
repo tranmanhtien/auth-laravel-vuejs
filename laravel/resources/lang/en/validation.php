@@ -159,5 +159,5 @@ return [
     */
 
     'attributes' => [],
-
+    'recaptcha'=>'Form đăng ký không dành cho robot',
 ];

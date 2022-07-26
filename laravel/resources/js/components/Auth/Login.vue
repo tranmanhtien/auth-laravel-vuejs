@@ -2,7 +2,6 @@
     <div class="container-login100">
         <div class="wrap-login100">
             <div class="login100-pic js-tilt" data-tilt>
-                <!--                <img src="images/img-01.png" alt="IMG">-->
                 <img :src="require(`/images/img-01.png`)" alt class="icon"/>
             </div>
 
@@ -62,7 +61,7 @@ export default {
     data() {
         return {
             form: {
-               _token : document.head.querySelector('meta[name="csrf-token"]').content
+               _token : document.head.querySelector('meta[name="csrf-token"]').content,
             },
             errors: {},
         }
